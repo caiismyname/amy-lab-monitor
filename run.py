@@ -18,8 +18,8 @@ def getWebsite():
 
     chrome_options = Options()  
     chrome_options.add_argument("--headless")
-    # chrome_options.binary_location = '/Applications/Google Chrome.app'
-    chrome_driver = os.getcwd() +"/chromedriver"
+    chrome_options.binary_location = os.environ['GOOGLE_CHROME_BIN']
+    chrome_driver = os.environ['CHROMEDRIVER_PATH']
     driver = webdriver.Chrome(chrome_driver, options=chrome_options)
     driver.implicitly_wait(5)
     driver.get("https://app.smartsheet.com/b/publish?EQBCT=1fb10103a37c4383b3e11b5e50c5a50d")
@@ -47,7 +47,6 @@ def checkDates(possibleElements):
 
 def sendText(date):
     print("Sending for {0}".format(date))
-    load_dotenv(find_dotenv())
 
     account_sid = os.environ['TWILIO_ACCOUNT_SID']
     auth_token = os.environ['TWILIO_AUTH_TOKEN']
@@ -62,6 +61,7 @@ def sendText(date):
             )
 
 def run():
+    load_dotenv(find_dotenv())
     checkDates(getWebsite())
 
 if (len(sys.argv) > 1):
