@@ -18,14 +18,14 @@ def getWebsite():
 
     chrome_options = Options()  
     chrome_options.add_argument("--headless")
-    chrome_options.binary_location = os.environ['GOOGLE_CHROME_BIN']
+    # chrome_options.binary_location = os.environ['GOOGLE_CHROME_BIN']
     chrome_driver = os.environ['CHROMEDRIVER_PATH']
     driver = webdriver.Chrome(chrome_driver, options=chrome_options)
     driver.implicitly_wait(5)
     driver.get("https://app.smartsheet.com/b/publish?EQBCT=1fb10103a37c4383b3e11b5e50c5a50d")
 
-    dedupedElements = list(set(driver.find_elements_by_class_name("gridCellContent")))
-    return ([x.text for x in dedupedElements])
+    dedupedElements = list(set([x.text for x in driver.find_elements_by_class_name("gridCellContent")]))
+    return (dedupedElements)
 
 def checkDates(possibleElements):
     print("Checking dates")
