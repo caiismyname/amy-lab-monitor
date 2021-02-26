@@ -4,6 +4,7 @@ import json
 import sys
 import time
 from dotenv import load_dotenv, find_dotenv
+from datetime import datetime
 
 from selenium import webdriver  
 from selenium.webdriver.chrome.options import Options  
@@ -13,8 +14,17 @@ from twilio.rest import Client
 TWILIO_NUMBER = "+12155932275"
 testMode = False
 
+def log(message):
+	date_format = "%d-%m-%Y %H:%M:%S"
+	timestamp = "[" + datetime.now().strftime(date_format) + "] "
+	with open("log.log", "a+") as f:
+		message = timestamp + message + "\n"
+		f.write(message)
+		f.close()		
+
 def getWebsite():
     print("Pulling site")
+    log("Pulling site")
 
     chrome_options = Options()  
     chrome_options.add_argument("--headless")
@@ -29,6 +39,7 @@ def getWebsite():
 
 def checkDates(possibleElements):
     print("Checking dates")
+    log("Checking Dates");
 
     # Import "database" of already-seen dates
     seenDates = json.load(open('seen_dates.json', 'r'))["dates"]
@@ -47,6 +58,7 @@ def checkDates(possibleElements):
 
 def sendText(date):
     print("Sending for {0}".format(date))
+    log("Sending for {0}".format(date))
 
     account_sid = os.environ['TWILIO_ACCOUNT_SID']
     auth_token = os.environ['TWILIO_AUTH_TOKEN']
